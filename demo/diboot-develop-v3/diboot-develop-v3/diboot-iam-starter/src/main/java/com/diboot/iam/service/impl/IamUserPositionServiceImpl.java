@@ -1,0 +1,164 @@
+/*
+ * Copyright (c) 2015-2099, www.dibo.ltd (service@dibo.ltd).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.diboot.iam.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.diboot.core.config.BaseConfig;
+import com.diboot.core.exception.BusinessException;
+import com.diboot.core.service.impl.BaseServiceImpl;
+import com.diboot.core.util.ContextHolder;
+import com.diboot.core.util.V;
+import com.diboot.core.vo.LabelValue;
+import com.diboot.core.vo.Status;
+import com.diboot.iam.entity.IamUserPosition;
+import com.diboot.iam.mapper.IamUserPositionMapper;
+import com.diboot.iam.service.IamUserPositionService;
+import com.diboot.iam.service.IamUserService;
+import com.diboot.iam.vo.IamUserPositionVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * 用户岗位关联相关Service实现
+ *
+ * @author wind
+ * @version v2.6.0
+ * @date 2022-06-23
+ */
+@Slf4j
+@Service
+public class IamUserPositionServiceImpl extends BaseServiceImpl<IamUserPositionMapper, IamUserPosition> implements IamUserPositionService {
+
+    @Autowired
+    private IamUserPositionMapper iamUserPositionMapper;
+
+    @Override
+    public List<IamUserPosition> getUserPositionListByUser(String userType, String userId) {
+        LambdaQueryWrapper<IamUserPosition> queryWrapper = Wrappers.<IamUserPosition>lambdaQuery()
+                .eq(IamUserPosition::getUserType, userType)
+                .eq(IamUserPosition::getUserId, userId)
+                .orderByDesc(IamUserPosition::getIsPrimaryPosition);
+        return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public List<String> getPositionIdsByOrg(String orgId) {
+        LambdaQueryWrapper<IamUserPosition> queryWrapper = Wrappers.<IamUserPosition>lambdaQuery()
+                .select(IamUserPosition::getPositionId)
+                .eq(IamUserPosition::getOrgId, orgId);
+        List<IamUserPosition> userPositions = baseMapper.selectList(queryWrapper);
+        if(V.notEmpty(userPositions)) {
+            return userPositions.stream().map(IamUserPosition::getPositionId).distinct().collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<IamUserPositionVO> getUserPositions(String userType, String userId) {
+        return iamUserPositionMapper.getUserPositions(userType, userId, BaseConfig.getActiveFlagValue());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean updateUserPositionRelations(String userType, String userId, List<IamUserPosition> userPositionList) {
+        if (V.isEmpty(userType) || V.isEmpty(userId)) {
+            throw new BusinessException(Status.FAIL_OPERATION, "exception.business.paramsError");
+        }
+        // 校验用户ID是否存在
+        if (V.notEmpty(userPositionList)) {
+            for (IamUserPosition userPosition : userPositionList) {
+                userPosition.setUserType(userType);
+                userPosition.setUserId(userId);
+            }
+        }
+        // 删除所有旧关联数据
+        LambdaQueryWrapper deleteWrapper = Wrappers.<IamUserPosition>lambdaQuery()
+                .eq(IamUserPosition::getUserType, userType)
+                .eq(IamUserPosition::getUserId, userId);
+        long count = baseMapper.selectCount(deleteWrapper);
+        if (count > 0) {
+            baseMapper.delete(deleteWrapper);
+        }
+        // 批量设置新的岗位列表
+        if (V.isEmpty(userPositionList)) {
+            return true;
+        }
+        for (IamUserPosition userPosition : userPositionList) {
+            userPosition.setId(null);
+            userPosition.setCreateTime(null);
+            userPosition.setUpdateTime(null);
+            baseMapper.insert(userPosition);
+        }
+        return true;
+    }
+
+    @Override
+    public List<String> getUserIdsByPosition(String orgId, List<String> positionIds) {
+        LambdaQueryWrapper<IamUserPosition> queryWrapper = Wrappers.<IamUserPosition>lambdaQuery()
+                .select(IamUserPosition::getUserId)
+                .in(IamUserPosition::getPositionId, positionIds);
+        if(V.notEmpty(orgId)) {
+            queryWrapper.eq(IamUserPosition::getOrgId, orgId);
+        }
+        List<IamUserPosition> userPositions = baseMapper.selectList(queryWrapper);
+        if(V.notEmpty(userPositions)) {
+            return userPositions.stream().map(IamUserPosition::getUserId).distinct().collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Map<String, List<LabelValue>> getPositionUsersMap(String orgId, List<String> positionIds) {
+        if (V.isEmpty(positionIds)) {
+            return Collections.emptyMap();
+        }
+        LambdaQueryWrapper<IamUserPosition> queryWrapper = Wrappers.<IamUserPosition>lambdaQuery()
+                .select(IamUserPosition::getUserId, IamUserPosition::getPositionId)
+                .in(IamUserPosition::getPositionId, positionIds);
+        if(V.notEmpty(orgId)) {
+            queryWrapper.eq(IamUserPosition::getOrgId, orgId);
+        }
+        List<IamUserPosition> userPositions = baseMapper.selectList(queryWrapper);
+        if(V.isEmpty(userPositions)) {
+            return Collections.emptyMap();
+        }
+        Map<String, List<LabelValue>> position2UsersMap = new HashMap<>();
+        List<String> userIds = new ArrayList<>();
+        for (IamUserPosition userPosition : userPositions){
+            String positionId = userPosition.getPositionId();
+            List<LabelValue> userList = position2UsersMap.computeIfAbsent(positionId, k -> new ArrayList<>());
+            userList.add(new LabelValue(null, userPosition.getUserId()));
+            userIds.add(userPosition.getUserId());
+        }
+        IamUserService userService = ContextHolder.getBean(IamUserService.class);
+        Map<String, LabelValue> userMap = userService.getLabelValueMap(userIds);
+        for (Map.Entry<String, List<LabelValue>> entry : position2UsersMap.entrySet()) {
+            for (LabelValue labelValue : entry.getValue()) {
+                LabelValue user = userMap.get(labelValue.getValue());
+                if (user != null) {
+                    labelValue.setLabel(user.getLabel());
+                }
+            }
+        }
+        return position2UsersMap;
+    }
+}

@@ -1,0 +1,175 @@
+{
+  "java": [
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "Statement.execute(",
+      "regExp": ".*Statement\\.execute\\(.*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "Statement.executeQuery(",
+      "regExp": ".*Statement\\.executeQuery\\(.*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "Statement.executeUpdate(",
+      "regExp": ".*Statement\\.executeUpdate\\(.*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "String sql = \"SELECT.*\" \\+ ",
+      "regExp": ".*String sql = \"SELECT.*\" \\+ .*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "String sql = \"INSERT.*\" \\+ ",
+      "regExp": ".*String sql = \"INSERT.*\" \\+ .*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "String sql = \"UPDATE.*\" \\+ ",
+      "regExp": ".*String sql = \"UPDATE.*\" \\+ .*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "String sql = \"DELETE.*\" \\+ ",
+      "regExp": ".*String sql = \"DELETE.*\" \\+ .*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "PreparedStatement.setString\\(.*, request\\.getParameter\\(",
+      "regExp": ".*PreparedStatement\\.setString\\(.*, request\\.getParameter\\(.*"
+    },
+    {
+      "type": "Java SQL注入风险",
+      "keyStr": "JdbcTemplate.query\\(String\\.format\\(",
+      "regExp": ".*JdbcTemplate\\.query\\(String\\.format\\(.*"
+    },
+    {
+      "type": "MyBatis XML ${}参数拼接风险",
+      "keyStr": "MyBatis XML ${} Injection",
+      "regExp": "(?i)<(select|update|delete|insert)[^>]*>[\\s\\S]*?\\$\\{[^}]+\\}[\\s\\S]*?</(select|update|delete|insert)>"
+    },
+    {
+      "type": "MyBatis XML动态SQL单条件风险",
+      "keyStr": "MyBatis XML Dynamic SQL",
+      "regExp": "(?i)<(select|update|delete)[^>]*>[\\s\\S]*?<where>[\\s\\S]*?</where>[\\s\\S]*?</(select|update|delete)>"
+    },
+    {
+      "type": "MyBatis XML like拼接风险",
+      "keyStr": "MyBatis XML LIKE",
+      "regExp": "(?i)<(select|update|delete)[^>]*>[\\s\\S]*?\\bLIKE\\s+['\"]?%?[#\\$]\\{[^}]+\\}['\"]?[\\s\\S]*?</(select|update|delete)>"
+    }
+  ],
+  "php": [
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "mysql_query(",
+      "regExp": ".*mysql_query\\(.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "mysqli_query(",
+      "regExp": ".*mysqli_query\\(.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "\\$sql = \"SELECT.*\" \\. \\$_GET\\[",
+      "regExp": ".*\\$sql = \"SELECT.*\" \\. \\$_GET\\[.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "\\$sql = \"SELECT.*\" \\. \\$_POST\\[",
+      "regExp": ".*\\$sql = \"SELECT.*\" \\. \\$_POST\\[.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "\\$sql = \"INSERT.*\" \\. \\$_GET\\[",
+      "regExp": ".*\\$sql = \"INSERT.*\" \\. \\$_GET\\[.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "\\$sql = \"UPDATE.*\" \\. \\$_POST\\[",
+      "regExp": ".*\\$sql = \"UPDATE.*\" \\. \\$_POST\\[.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "PDO::exec\\(",
+      "regExp": ".*PDO::exec\\(.*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "PDOStatement::execute\\(\\)",
+      "regExp": ".*PDOStatement::execute\\(\\).*"
+    },
+    {
+      "type": "PHP SQL注入风险",
+      "keyStr": "mysqli_real_escape_string\\(",
+      "regExp": ".*mysqli_real_escape_string\\(.*"
+    }
+  ],
+  "go": [
+    {
+      "type": "Go SQL注入风险",
+      "keyStr": "fmt.Sprintf\\(\"SELECT.*\", ",
+      "regExp": ".*fmt\\.Sprintf\\(\"SELECT.*\", .*"
+    },
+    {
+      "type": "Go SQL注入风险",
+      "keyStr": "fmt.Sprintf\\(\"INSERT.*\", ",
+      "regExp": ".*fmt\\.Sprintf\\(\"INSERT.*\", .*"
+    },
+    {
+      "type": "Go SQL注入风险",
+      "keyStr": "db.Exec\\(fmt.Sprintf\\(",
+      "regExp": ".*db\\.Exec\\(fmt\\.Sprintf\\(.*"
+    },
+    {
+      "type": "Go SQL注入风险",
+      "keyStr": "db.Query\\(fmt.Sprintf\\(",
+      "regExp": ".*db\\.Query\\(fmt\\.Sprintf\\(.*"
+    },
+    {
+      "type": "Go SQL注入风险",
+      "keyStr": "sql.DB.Query\\(\".*\" \\+ ",
+      "regExp": ".*sql\\.DB\\.Query\\(\".*\" \\+ .*"
+    }
+  ],
+  "python": [
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "cursor.execute\\(\"SELECT.*\" \\% ",
+      "regExp": ".*cursor\\.execute\\(\"SELECT.*\" \\% .*"
+    },
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "cursor.execute\\(\"INSERT.*\" \\% ",
+      "regExp": ".*cursor\\.execute\\(\"INSERT.*\" \\% .*"
+    },
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "cursor.execute\\(\"UPDATE.*\" \\+ ",
+      "regExp": ".*cursor\\.execute\\(\"UPDATE.*\" \\+ .*"
+    },
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "cursor.execute\\(\"DELETE.*\" \\+ ",
+      "regExp": ".*cursor\\.execute\\(\"DELETE.*\" \\+ .*"
+    },
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "sqlite3\\.connect\\(\\).cursor\\(\\).execute\\(f\"",
+      "regExp": ".*sqlite3\\.connect\\(\\)\\.cursor\\(\\)\\.execute\\(f\".*"
+    },
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "psycopg2\\.connect\\(\\).cursor\\(\\).execute\\(\"SELECT.*\" \\% ",
+      "regExp": ".*psycopg2\\.connect\\(\\)\\.cursor\\(\\)\\.execute\\(\"SELECT.*\" \\% .*"
+    },
+    {
+      "type": "Python SQL注入风险",
+      "keyStr": "mysql\\.connector\\.connect\\(\\).cursor\\(\\).execute\\(f\"",
+      "regExp": ".*mysql\\.connector\\.connect\\(\\)\\.cursor\\(\\)\\.execute\\(f\".*"
+    }
+  ]
+}

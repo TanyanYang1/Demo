@@ -1,0 +1,73 @@
+{
+  "java": [
+    {
+      "type": "XML解析器XXE漏洞风险(DOM/SAX)",
+      "keyStr": "XML Parser XXE",
+      "regExp": "(?i).*\\b(DOM|SAX|DocumentBuilder|SAXParser|XMLReader|TransformerFactory)\\s*\\.\\s*newInstance\\(\\)[\\s\\S]{0,500}(?!\\.setFeature\\(\\s*[\"']http://xml\\.apache\\.org/xerces/jaxp/securityManager[\"']|\\.setFeature\\(\\s*[\"']http://javax\\.xml\\.XMLConstants/feature/secure-processing[\"'])|.*\\bDocumentBuilderFactory\\s+\\w+\\s*=\\s*DocumentBuilderFactory\\.newInstance\\(\\)[\\s\\S]{0,500}(?!\\w+\\.setFeature\\()"
+    },
+    {
+      "type": "MyBatis XML外部实体风险",
+      "keyStr": "MyBatis XML XXE",
+      "regExp": "(?i)<!ENTITY\\s+\\w+\\s+SYSTEM\\s+['\"].+['\"]>.*</(select|update|delete|insert)>"
+    },
+    {
+      "type": "Spring XML配置XXE风险",
+      "keyStr": "Spring XML XXE",
+      "regExp": "(?i)<beans[^>]*>[\\s\\S]*?<!ENTITY\\s+\\w+\\s+SYSTEM\\s+['\"].+['\"]>[\\s\\S]*?</beans>"
+    },
+    {
+      "type": "JAXB解析XXE漏洞风险",
+      "keyStr": "JAXB Unmarshal XXE",
+      "regExp": "(?i).*\\bJAXBContext\\.newInstance\\(\\)[\\s\\S]{0,300}\\bunmarshal\\s*\\([^)]*\\)(?!\\.setProperty\\(\\s*[\"']javax\\.xml\\.bind\\.jaxb\\.factory\\.XMLInputFactory[\"'])"
+    },
+    {
+      "type": "XStream反序列化XXE风险",
+      "keyStr": "XStream XXE",
+      "regExp": "(?i).*\\bXStream\\s+\\w+\\s*=\\s*new\\s+XStream\\(\\)[\\s\\S]{0,300}\\bfromXML\\s*\\([^)]*\\)(?!\\.addPermission\\()"
+    }
+  ],
+  "php": [
+    {
+      "type": "SimpleXML XXE漏洞风险",
+      "keyStr": "SimpleXML XXE",
+      "regExp": "(?i).*\\bsimplexml_load_string\\s*\\([^)]*\\)(?!\\,\\s*LIBXML_NOENT\\s*\\|\\s*LIBXML_DTDLOAD)|.*\\bsimplexml_load_file\\s*\\([^)]*\\)(?!\\,\\s*LIBXML_NOENT\\s*\\|\\s*LIBXML_DTDLOAD)"
+    },
+    {
+      "type": "DOMDocument XXE漏洞风险",
+      "keyStr": "DOMDocument XXE",
+      "regExp": "(?i).*\\bDOMDocument\\s+\\$\\w+\\s*=\\s*new\\s+DOMDocument\\(\\)[\\s\\S]{0,300}(?!\\$\\w+\\->loadXML\\(.*,\\s*LIBXML_NOENT\\)|\\$\\w+\\->setParameter\\(\\s*LIBXML_PARSEHUGE\\))"
+    },
+    {
+      "type": "XMLReader XXE漏洞风险",
+      "keyStr": "XMLReader XXE",
+      "regExp": "(?i).*\\bXMLReader::open\\s*\\([^)]*\\)|.*\\bXMLReader::read\\s*\\(\\)[\\s\\S]{0,200}(?!\\->setParserProperty\\(\\s*XMLReader::VALIDATE\\,\\s*false\\))"
+    },
+    {
+      "type": "SoapClient XXE漏洞风险",
+      "keyStr": "SoapClient XXE",
+      "regExp": "(?i).*\\bnew\\s+SoapClient\\s*\\([^)]*\\,\\s*array\\s*\\([^)]*['\"]options['\"]\\s*=>\\s*array\\([^)]*(?!['\"]features['\"]\\s*=>\\s*SOAP_SINGLE_ELEMENT_ARRAYS)\\))"
+    }
+  ],
+  "go": [
+    {
+      "type": "encoding/xml XXE漏洞风险",
+      "keyStr": "encoding/xml Unmarshal XXE",
+      "regExp": "(?i).*\\bxml\\.Unmarshal\\s*\\([^)]*\\,\\s*&[^)]*\\)|.*\\bxml\\.NewDecoder\\s*\\([^)]*\\)\\.Decode\\s*\\([^)]*\\)(?!\\.SetFeature\\(\\s*\"http://xml\\.org/sax/features/external-general-entities\"\\,\\s*false\\))"
+    },
+    {
+      "type": "xmlquery XXE漏洞风险",
+      "keyStr": "xmlquery Parse XXE",
+      "regExp": "(?i).*\\bxmlquery\\.Parse\\s*\\([^)]*\\)|.*\\bxmlquery\\.ParseReader\\s*\\([^)]*\\)(?!\\.DisableXXE\\(\\))"
+    },
+    {
+      "type": "goxmlparser XXE漏洞风险",
+      "keyStr": "goxmlparser XXE",
+      "regExp": "(?i).*\\bgoxmlparser\\.NewParser\\s*\\([^)]*\\)[\\s\\S]{0,200}(?!\\.SetDisableXXE\\(\\s*true\\))"
+    },
+    {
+      "type": "Gin接收XML参数XXE风险",
+      "keyStr": "Gin BindXML XXE",
+      "regExp": "(?i).*c\\.BindXML\\s*\\([^)]*\\)|.*c\\.ShouldBindXML\\s*\\([^)]*\\)(?!\\.SetFeature\\(\\s*\"http://javax\\.xml\\.XMLConstants/feature/secure-processing\"\\,\\s*true\\))"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "java": [
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "getRuntime().exec(",
+      "regExp": ".*getRuntime\\(\\)\\.exec\\(.*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "new ProcessBuilder(",
+      "regExp": ".*new ProcessBuilder\\(.*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "DefaultExecutor.execute(",
+      "regExp": ".*DefaultExecutor\\.execute\\(.*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "Class.forName(\"java.lang.Runtime\")",
+      "regExp": ".*Class\\.forName\\(\"java\\.lang\\.Runtime\"\\).*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "getMethod(\"getRuntime\")",
+      "regExp": ".*getMethod\\(\"getRuntime\"\\).*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "GroovyShell.evaluate()",
+      "regExp": ".*GroovyShell\\.evaluate\\(\\).*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "\".execute()",
+      "regExp": ".*\"\\.execute\\(\\).*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "new ProcessExecutor(",
+      "regExp": ".*new ProcessExecutor\\(.*"
+    },
+    {
+      "type": "Java系统命令执行风险",
+      "keyStr": "ProcBuilder.run(",
+      "regExp": ".*ProcBuilder\\.run\\(.*"
+    }
+  ],
+  "php": [
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "``",
+      "regExp": ".*`.*`.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "exec(",
+      "regExp": ".*exec\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "system(",
+      "regExp": ".*system\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "passthru(",
+      "regExp": ".*passthru\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "shell_exec(",
+      "regExp": ".*shell_exec\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "proc_open(",
+      "regExp": ".*proc_open\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "popen(",
+      "regExp": ".*popen\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "pcntl_exec(",
+      "regExp": ".*pcntl_exec\\(.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "Symfony\\Component\\Process\\Process",
+      "regExp": ".*Symfony\\\\Component\\\\Process\\\\Process.*"
+    },
+    {
+      "type": "PHP系统命令执行风险",
+      "keyStr": "new Process(",
+      "regExp": ".*new Process\\(.*"
+    }
+  ],
+  "go": [
+    {
+      "type": "Go系统命令执行风险",
+      "keyStr": "exec.Command(\"sh",
+      "regExp": ".*exec\\.Command\\(\"sh.*"
+    },
+    {
+      "type": "Go系统命令执行风险",
+      "keyStr": "exec.Command(\"bash",
+      "regExp": ".*exec\\.Command\\(\"bash.*"
+    },
+    {
+      "type": "Go系统命令执行风险",
+      "keyStr": "exec.Command(\"cmd",
+      "regExp": ".*exec\\.Command\\(\"cmd.*"
+    }
+  ],
+  "python": [
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "os.system(",
+      "regExp": ".*os\\.system\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "os.popen(",
+      "regExp": ".*os\\.popen\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "subprocess.run(",
+      "regExp": ".*subprocess\\.run\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "subprocess.call(",
+      "regExp": ".*subprocess\\.call\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "subprocess.check_call(",
+      "regExp": ".*subprocess\\.check_call\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "subprocess.check_output(",
+      "regExp": ".*subprocess\\.check_output\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "subprocess.Popen(",
+      "regExp": ".*subprocess\\.Popen\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "commands.getoutput(",
+      "regExp": ".*commands\\.getoutput\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "commands.getstatusoutput(",
+      "regExp": ".*commands\\.getstatusoutput\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "from invoke import run",
+      "regExp": ".*from invoke import run.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "from plumbum import local",
+      "regExp": ".*from plumbum import local.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "libc.system(",
+      "regExp": ".*libc\\.system\\(.*"
+    },
+    {
+      "type": "Python系统命令执行风险",
+      "keyStr": "import sh",
+      "regExp": ".*import sh.*"
+    }
+  ]
+}

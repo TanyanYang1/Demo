@@ -1,0 +1,165 @@
+{
+  "java": [
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "DocumentBuilderFactory.newInstance()",
+      "regExp": ".*DocumentBuilderFactory\\.newInstance\\(\\).*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "SAXParserFactory.newInstance()",
+      "regExp": ".*SAXParserFactory\\.newInstance\\(\\).*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "XMLReaderFactory.createXMLReader()",
+      "regExp": ".*XMLReaderFactory\\.createXMLReader\\(\\).*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "TransformerFactory.newInstance()",
+      "regExp": ".*TransformerFactory\\.newInstance\\(\\).*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "XMLInputFactory.newInstance()",
+      "regExp": ".*XMLInputFactory\\.newInstance\\(\\).*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "setFeature\\(\"http://xml.org/sax/features/external-general-entities\"",
+      "regExp": ".*setFeature\\(\"http://xml.org/sax/features/external-general-entities\".*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "setFeature\\(\"http://xml.org/sax/features/external-parameter-entities\"",
+      "regExp": ".*setFeature\\(\"http://xml.org/sax/features/external-parameter-entities\".*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "DOMParser.parse(",
+      "regExp": ".*DOMParser\\.parse\\(.*"
+    },
+    {
+      "type": "Java XXE漏洞风险",
+      "keyStr": "SAXParser.parse(",
+      "regExp": ".*SAXParser\\.parse\\(.*"
+    }
+  ],
+  "php": [
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "simplexml_load_string(",
+      "regExp": ".*simplexml_load_string\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "simplexml_load_file(",
+      "regExp": ".*simplexml_load_file\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "xml_parse(",
+      "regExp": ".*xml_parse\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "xml_parser_create(",
+      "regExp": ".*xml_parser_create\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "DOMDocument->load(",
+      "regExp": ".*DOMDocument->load\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "DOMDocument->loadXML(",
+      "regExp": ".*DOMDocument->loadXML\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "SoapClient->__construct(",
+      "regExp": ".*SoapClient->__construct\\(.*"
+    },
+    {
+      "type": "PHP XXE漏洞风险",
+      "keyStr": "xmlrpc_decode(",
+      "regExp": ".*xmlrpc_decode\\(.*"
+    }
+  ],
+  "go": [
+    {
+      "type": "Go XXE漏洞风险",
+      "keyStr": "encoding/xml.Unmarshal(",
+      "regExp": ".*encoding/xml\\.Unmarshal\\(.*"
+    },
+    {
+      "type": "Go XXE漏洞风险",
+      "keyStr": "xml.NewDecoder(",
+      "regExp": ".*xml\\.NewDecoder\\(.*"
+    },
+    {
+      "type": "Go XXE漏洞风险",
+      "keyStr": "xml.Decoder.Decode(",
+      "regExp": ".*xml\\.Decoder\\.Decode\\(.*"
+    },
+    {
+      "type": "Go XXE漏洞风险",
+      "keyStr": "github.com/beevik/etree",
+      "regExp": ".*github\\.com/beevik/etree.*"
+    },
+    {
+      "type": "Go XXE漏洞风险",
+      "keyStr": "etree.ParseXML(",
+      "regExp": ".*etree\\.ParseXML\\(.*"
+    }
+  ],
+  "python": [
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "xml.etree.ElementTree.parse(",
+      "regExp": ".*xml\\.etree\\.ElementTree\\.parse\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "xml.etree.ElementTree.fromstring(",
+      "regExp": ".*xml\\.etree\\.ElementTree\\.fromstring\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "lxml.etree.parse(",
+      "regExp": ".*lxml\\.etree\\.parse\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "lxml.etree.fromstring(",
+      "regExp": ".*lxml\\.etree\\.fromstring\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "xml.sax.parse(",
+      "regExp": ".*xml\\.sax\\.parse\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "xml.sax.make_parser(",
+      "regExp": ".*xml\\.sax\\.make_parser\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "xml.dom.minidom.parse(",
+      "regExp": ".*xml\\.dom\\.minidom\\.parse\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "xml.dom.minidom.parseString(",
+      "regExp": ".*xml\\.dom\\.minidom\\.parseString\\(.*"
+    },
+    {
+      "type": "Python XXE漏洞风险",
+      "keyStr": "defusedxml",
+      "regExp": ".*defusedxml.*"
+    }
+  ]
+}
