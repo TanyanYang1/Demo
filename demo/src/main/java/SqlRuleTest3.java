@@ -1,30 +1,30 @@
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-public class SqlRuleTest2 {
+public class SqlRuleTest3 {
 
-    // ====================== 你只需要改这 3 个配置 ======================
+    // ====================== 你的配置（不用改，直接用）======================
     private static final String RULE_FILE_PATH = "C:\\Users\\19017\\Desktop\\rules\\demo\\src\\main\\java\\rules-Sql.json";
-    private static final String GITHUB_OWNER = "TanyanYang1";       // GitHub 用户名
-    private static final String GITHUB_REPO = "Demo";               // 仓库名
-    private static final String GITHUB_TOKEN = "";     //
-    // =================================================================
+    private static final String GITHUB_OWNER = "TanyanYang1";
+    private static final String GITHUB_REPO = "Demo";
+    private static final String GITHUB_TOKEN = ""; // 公开仓库留空
+    // ====================================================================
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
     public static void main(String[] args) {
         try {
-            // 1. 读取规则
-            JsonNode rootNode = OBJECT_MAPPER.readTree(new java.io.File(RULE_FILE_PATH));
+            // 读取规则文件
+            JsonNode rootNode = OBJECT_MAPPER.readTree(new File(RULE_FILE_PATH));
             JsonNode javaRulesNode = rootNode.get("java");
 
             if (javaRulesNode == null || !javaRulesNode.isArray()) {
@@ -32,7 +32,6 @@ public class SqlRuleTest2 {
                 return;
             }
 
-            // 2. 遍历规则 → 在线扫描 GitHub
             Iterator<JsonNode> iterator = javaRulesNode.elements();
             int index = 0;
 
@@ -44,8 +43,7 @@ public class SqlRuleTest2 {
 
                 System.out.println("=====================================");
                 System.out.println("规则 " + index + "：" + type);
-                System.out.println("扫描 GitHub 仓库：" + GITHUB_OWNER + "/" + GITHUB_REPO);
-                System.out.println("正则：" + regExp);
+                System.out.println("正在扫描 GitHub：" + GITHUB_OWNER + "/" + GITHUB_REPO);
 
                 // 在线扫描（不克隆）
                 scanGitHubRepo("", regExp, type);
@@ -59,7 +57,7 @@ public class SqlRuleTest2 {
     }
 
     /**
-     * 【核心】在线扫描 GitHub 仓库文件（不克隆、不下载）
+     * 在线扫描 GitHub 仓库（不克隆、不下载）
      */
     private static void scanGitHubRepo(String path, String regExp, String ruleType) throws IOException, InterruptedException {
         String apiUrl = String.format(
@@ -71,6 +69,7 @@ public class SqlRuleTest2 {
                 .uri(URI.create(apiUrl))
                 .header("Accept", "application/vnd.github.v3+json");
 
+        // 只有 token 不为空才添加请求头
         if (GITHUB_TOKEN != null && !GITHUB_TOKEN.isBlank()) {
             requestBuilder.header("Authorization", "token " + GITHUB_TOKEN);
         }
@@ -88,22 +87,24 @@ public class SqlRuleTest2 {
                 String name = file.get("name").asText();
                 String filePath = file.get("path").asText();
 
-                // 跳过 .git 目录
-                if (filePath.startsWith(".git")) continue;
+                // 跳过隐藏目录
+                if (filePath.startsWith(".git") || filePath.startsWith(".")) continue;
 
                 if ("dir".equals(type)) {
-                    scanGitHubRepo(filePath, regExp, ruleType); // 递归
+                    scanGitHubRepo(filePath, regExp, ruleType);
                 } else {
-
+                    // 只扫描 java / xml
                     if (isTargetFile(name, ruleType)) {
-                        System.out.println("\n在线扫描文件：" + filePath);
+                        System.out.println("\n→ 扫描文件：" + filePath);
                         String content = getFileContent(file);
-                        boolean match = Pattern.matches("(?s).*" + regExp + ".*", content);
 
-                        if (match) {
-                            System.out.println("✅ 匹配风险：" + ruleType);
+                        // 【修复】改用 find() 匹配，100%能抓到 ${xxx}
+                        boolean isMatch = Pattern.compile(regExp).matcher(content).find();
+
+                        if (isMatch) {
+                            System.out.println("✅ 【高危】匹配成功：" + ruleType);
                         } else {
-                            System.out.println("❌ 无风险");
+                            System.out.println("❌ 安全");
                         }
                     }
                 }
@@ -112,23 +113,23 @@ public class SqlRuleTest2 {
     }
 
     /**
-     * 在线获取文件内容（Base64解码）
+     * 获取文件内容
      */
     private static String getFileContent(JsonNode fileNode) throws IOException, InterruptedException {
-        String url = fileNode.get("download_url").asText();
+        String downloadUrl = fileNode.get("download_url").asText();
         HttpResponse<String> resp = HTTP_CLIENT.send(
-                HttpRequest.newBuilder(URI.create(url)).build(),
+                HttpRequest.newBuilder(URI.create(downloadUrl)).build(),
                 HttpResponse.BodyHandlers.ofString()
         );
         return resp.body();
     }
 
     /**
-     * 只扫描 .java / .xml
+     * 只扫描需要的文件
      */
     private static boolean isTargetFile(String fileName, String ruleType) {
-        boolean isJava = ruleType.contains("Java") && fileName.endsWith(".java");
-        boolean isXml = ruleType.contains("MyBatis") && fileName.endsWith(".xml");
-        return isJava || isXml;
+        if (ruleType.contains("Java") && fileName.endsWith(".java")) return true;
+        if (ruleType.contains("MyBatis") && fileName.endsWith(".xml")) return true;
+        return false;
     }
 }

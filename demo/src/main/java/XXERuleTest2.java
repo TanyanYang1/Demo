@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class XXERuleTest2 {
 
     // 扫描仓库根目录
-   // private static final String REPO_ROOT = System.getProperty("user.dir"); // 当前项目根目录
+
     private static final String REPO_ROOT =
             "C:\\Users\\19017\\Desktop\\rules\\demo\\diboot-develop-v3";
     private static final String RULE_FILE = "C:\\Users\\19017\\Desktop\\rules\\demo\\src\\main\\java\\rules-XXE.json";
@@ -66,7 +66,7 @@ public class XXERuleTest2 {
                     try {
                         String content = Files.readString(file.toPath());
                         if (pattern.matcher(content).find()) {
-                            System.out.println("⚠️  发现漏洞：" + file.getAbsolutePath());
+                            System.out.println("发现漏洞：" + file.getAbsolutePath());
                         }
                     } catch (Exception ignored) {}
                 }
